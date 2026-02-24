@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guil Vitor | Desenvolvedor Web</title>
+  <meta name="description" content="Desenvolvedor Web (React, Next.js, TypeScript). Interfaces modernas, APIs e aplicações em produção." />
+
+  <style>
+    :root{
+      --bg: #0b0f19;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.08);
+      --stroke: rgba(255,255,255,0.10);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --muted2: rgba(255,255,255,0.55);
+      --accent: #7c5cff;
+      --accent2:#2dd4bf;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1100px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    html{ scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: var(--font);
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(124,92,255,0.25), transparent 60%),
+                  radial-gradient(1000px 700px at 85% 15%, rgba(45,212,191,0.18), transparent 60%),
+                  radial-gradient(1000px 900px at 55% 100%, rgba(124,92,255,0.12), transparent 62%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    .container{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    /* Top Nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(11,15,25,0.85), rgba(11,15,25,0.55));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 200px;
+    }
+    .logo{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,0.55), transparent 60%),
+        linear-gradient(135deg, rgba(124,92,255,0.95), rgba(45,212,191,0.70));
+      box-shadow: 0 10px 28px rgba(124,92,255,0.25);
+      border: 1px solid rgba(255,255,255,0.20);
+    }
+    .brand .name{ font-weight: 700; letter-spacing: 0.2px; }
+    .brand .role{ font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+    .links{
+      display:flex;
+      align-items:center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .links a{
+      padding: 8px 10px;
+      border-radius: 12px;
+      transition: 160ms ease;
+    }
+    .links a:hover{
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-cta{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 160ms ease;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); }
+    .btn:active{ transform: translateY(0); }
+    .btn.primary{
+      border-color: rgba(124,92,255,0.35);
+      background: linear-gradient(135deg, rgba(124,92,255,0.95), rgba(124,92,255,0.65));
+      box-shadow: 0 12px 40px rgba(124,92,255,0.18);
+    }
+    .btn.primary:hover{
+      border-color: rgba(124,92,255,0.55);
+      box-shadow: 0 14px 48px rgba(124,92,255,0.24);
+    }
+    .btn.ghost{
+      background: transparent;
+      border-color: rgba(255,255,255,0.10);
+    }
+
+    /* Hero */
+    .hero{
+      position: relative;
+      padding: 60px 0 26px;
+    }
+    .grid-hero{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 13px;
+      width: fit-content;
+    }
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 6px rgba(45,212,191,0.12);
+      animation: dotPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes dotPulse{
+      0%,100%{ box-shadow: 0 0 0 6px rgba(45,212,191,0.12); }
+      50%{ box-shadow: 0 0 0 10px rgba(45,212,191,0.08); }
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(34px, 4.1vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.8px;
+    }
+    .lead{
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 60ch;
+    }
+    .hero-actions{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .mini{
+      margin-top: 16px;
+      display:flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+    .mini span{
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      transition: 160ms ease;
+
+    }
+
+    @media (max-width: 920px){
+  .mini span{ width:100%; }
+}
+
+    .mini span:hover{
+      border-color: rgba(124,92,255,0.35);
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-1px);
+    }
+
+    .card{
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+    }
+    .hero-card{
+      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow:hidden;
+      max-height: 450px;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 240px at 40% 0%, rgba(124,92,255,0.18), transparent 60%),
+        radial-gradient(420px 260px at 80% 20%, rgba(45,212,191,0.12), transparent 65%);
+      pointer-events:none;
+    }
+    .hero-card > *{ position: relative; z-index: 1; }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .kpi{
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.18);
+      transition: .3s ease;
+    }
+    .kpi:hover{
+      transform: translateY(-3px);
+      border-color: rgba(124,92,255,0.35);
+      box-shadow: 0 16px 45px rgba(124,92,255,0.12);
+    }
+    .kpi .num{
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+    .kpi .lab{ color: var(--muted); font-size: 12px; margin-top: 3px; }
+
+    .quick{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .row{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      transition: 160ms ease;
+    }
+    .row:hover{
+      border-color: rgba(45,212,191,0.25);
+      background: rgba(255,255,255,0.06);
+    }
+    .row .left{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .row .t{ font-weight: 800; font-size: 13px; }
+    .row .s{ color: var(--muted); font-size: 12px; }
+    .chip{
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* Sections */
+    section{
+      padding: 44px 0;
+    }
+    .section-title{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing: -0.2px;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid{
+      display:grid;
+      gap: 14px;
+    }
+    .grid.cols-3{ grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2{ grid-template-columns: repeat(2, 1fr); }
+
+    .panel{
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+      padding: 18px;
+      transition:.3s ease;
+    }
+    .panel:hover{
+      border-color: rgba(124,92,255,0.35);
+      box-shadow: 0 20px 50px rgba(124,92,255,.10);
+      transform: translateY(-2px);
+    }
+    .panel h3{
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+    .panel p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .meta{
+      margin-top: 10px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag{
+      font-size: 12px;
+      color: var(--muted);
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.18);
+      transition: 160ms ease;
+    }
+    .tag:hover{
+      border-color: rgba(45,212,191,0.25);
+      color: rgba(255,255,255,0.78);
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .timeline{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .item{
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.16);
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      transition: 160ms ease;
+    }
+    .item:hover{
+      border-color: rgba(124,92,255,0.25);
+      background: rgba(0,0,0,0.20);
+    }
+    .item strong{ font-size: 13px; }
+    .item span{ color: var(--muted); font-size: 12px; }
+
+    .footer{
+      padding: 32px 0 44px;
+      color: var(--muted2);
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 10px;
+    }
+
+    /* Mobile */
+    @media (max-width: 920px){
+      .grid-hero{ grid-template-columns: 1fr; }
+      .grid.cols-3{ grid-template-columns: 1fr; }
+      .grid.cols-2{ grid-template-columns: 1fr; }
+      .split{ grid-template-columns: 1fr; }
+      .links{ display:none; }
+      .brand{ min-width: unset; }
+      .nav-inner{ padding: 12px 0; }
+    }
+
+    /* ===== Destaques por cor (sem exagero) ===== */
+    .hl{
+      font-weight: 650;
+      letter-spacing: 0.1px;
+      white-space: nowrap;
+    }
+    .hl.p{ color: var(--accent); }
+    .hl.c{ color: var(--accent2); }
+    .hl.w{ color: rgba(255,255,255,0.95); font-weight: 750; }
+
+    /* Sublinhar suave (bem discreto) */
+    .hl.u{
+      position: relative;
+    }
+    .hl.u::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-3px;
+      width:100%;
+      height:3px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, rgba(124,92,255,.85), rgba(45,212,191,.65));
+      opacity: .55;
+    }
+
+    /* ===== Leve animação hero (mantém suave) ===== */
+    .hero h1{
+      animation: fadeUp 900ms ease forwards;
+      opacity:0;
+      transform:translateY(14px);
+    }
+    .hero .lead{
+      animation: fadeUp 900ms ease 120ms forwards;
+      opacity:0;
+      transform:translateY(14px);
+    }
+    @keyframes fadeUp{
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    /* ===== Scroll reveal suave ===== */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition: all .7s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* ===== Full Stack gradiente (texto) ===== */
+    .strong-badge{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      font-weight:800;
+    }
+
+    /* ===== PROJECT CARD MEDIA ===== */
+.project-media{
+  margin-top: 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.18);
+}
+
+.project-thumb{
+  display:block;
+  width:100%;
+  height: 170px;
+  object-fit: cover;
+  background:
+    radial-gradient(700px 220px at 20% 0%, rgba(124,92,255,0.22), transparent 60%),
+    radial-gradient(700px 240px at 80% 20%, rgba(45,212,191,0.18), transparent 60%),
+    rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.project-bottom{
+  padding: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-quick{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items:center;
+  justify-content: space-between;
+}
+
+.project-badges{
+  display:flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill{
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.72);
+}
+
+.pill.ok{ border-color: rgba(45,212,191,0.25); color: rgba(45,212,191,0.95); }
+.pill.hot{ border-color: rgba(124,92,255,0.25); color: rgba(124,92,255,0.95); }
+
+.project-links{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.project-links .btn{
+  padding: 10px 12px;
+}
+
+.project-note{
+  color: rgba(255,255,255,0.62);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* Mobile tweak */
+@media (max-width: 420px){
+  .project-thumb{ height: 150px; }
+}
+
+.acc{
+  margin-top: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.16);
+  overflow: hidden;
+}
+
+.acc-toggle{
+  width: 100%;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 0;
+  color: rgba(255,255,255,0.92);
+  cursor: pointer;
+  text-align: left;
+}
+
+.acc-toggle:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.acc-title{
+  display:flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.acc-title strong{
+  font-size: 13px;
+  letter-spacing: .1px;
+}
+
+.acc-title span{
+  font-size: 12px;
+  color: rgba(255,255,255,0.68);
+}
+
+.acc-arrow{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05);
+  display:grid;
+  place-items:center;
+  flex: 0 0 auto;
+  transition: transform .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.acc-toggle[aria-expanded="true"] .acc-arrow{
+  transform: rotate(180deg);
+  border-color: rgba(124,92,255,0.28);
+  background: rgba(124,92,255,0.10);
+}
+
+.acc-panel{
+  height: 0;
+  overflow: hidden;
+  transition: height .35s ease;
+}
+
+.acc-inner{
+  padding: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.modal-overlay {
+  position: fixed;   /* obrigatório */
+  inset: 0;          /* ocupa tela inteira */
+  background: rgba(0,0,0,0.75);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+  z-index: 9999;     /* alto */
+}
+/* Ativo */
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Caixa */
+.modal {
+  background: #111;
+  color: #fff;
+  width: 90%;
+  max-width: 600px;
+  padding: 30px;
+  border-radius: 16px;
+  transform: translateY(40px);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+/* Fechar */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Imagem */
+.modal-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+/* Botões */
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  background: #333;
+  color: white;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background: #444;
+}
+
+.btn.primary {
+  background: #6C63FF;
+}
+
+.btn.primary:hover {
+  background: #5848e0;
+}
+
+/* Overlay principal */
+/* Overlay principal */
+.modal-overlay {
+  position: fixed;      /* 👈 ESSENCIAL */
+  inset: 0;
+
+  background: rgba(0,0,0,0.75);
+
+  display: flex;
+  align-items: center;      /* centro vertical */
+  justify-content: center;  /* centro horizontal */
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+
+  z-index: 999;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal */
+.modal {
+  background: #111;
+  color: white;
+
+  width: 95%;
+  max-width: 800px;
+
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 30px;
+  border-radius: 16px;
+
+  position: relative;
+  transform: translateY(20px);
+  transition: 0.3s ease;
+}
+
+/* animação suave ao abrir */
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+/* Scroll bonito */
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+.modal::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+}
+
+/* Botão fechar */
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Imagem */
+.modal-image {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 12px;
+  cursor: zoom-in;
+  transition: 0.3s;
+}
+
+.modal-image:hover {
+  opacity: 0.9;
+}
+
+/* Botões */
+.modal-actions {
+  margin-top: 25px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ========================= */
+/* VISUALIZADOR DE IMAGEM */
+/* ========================= */
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  z-index: 10000;
+  padding: 40px 20px;
+}
+
+.image-viewer.active {
+  display: block;
+}
+
+/* Scroll interno da imagem */
+.image-scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.image-scroll img {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Fechar imagem */
+.image-close {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  font-size: 35px;
+  color: white;
+  cursor: pointer;
+}
+
+/* ================= MODAL OVERLAY ================= */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(10,12,18,0.85);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.modal-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* ================= MODAL CONTAINER ================= */
+.modal{
+  width:95%;
+  max-width:900px;
+  height:90vh;
+  background:#111319;
+  border-radius:22px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,0.08);
+  transform:translateY(20px);
+  transition:.3s ease;
+  padding: 10px;
+}
+
+.modal-overlay.active .modal{
+  transform:translateY(0);
+}
+
+/* ================= HEADER ================= */
+.modal-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 24px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);
+}
+
+.modal-title{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.modal-logo{
+  width:100px;
+  height:42px;
+}
+
+.modal-title h2{
+  margin:0;
+  font-size:18px;
+}
+
+.modal-sub{
+  font-size:12px;
+  color:rgba(255,255,255,0.55);
+}
+
+/* ================= DESCRIPTION ================= */
+.modal-description{
+  padding:18px 24px;
+  font-size:14px;
+  color:rgba(255,255,255,0.75);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+/* ================= GALERIA ================= */
+.modal-gallery{
+  flex:1;
+  overflow-y:auto;
+  padding:20px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.modal-gallery::-webkit-scrollbar{
+  width:6px;
+}
+.modal-gallery::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.15);
+  border-radius:10px;
+}
+
+.modal-image{
+  width:100%;
+  border-radius:16px;
+  cursor:zoom-in;
+  transition:.3s ease;
+}
+
+.modal-image:hover{
+  transform:scale(1.02);
+}
+
+/* ================= FOOTER ================= */
+.modal-footer{
+  padding:18px 24px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);
+  display:flex;
+  justify-content:flex-end;
+}
+
+/* ================= CLOSE ================= */
+.modal-close{
+  background:none;
+  border:none;
+  font-size:26px;
+  color:white;
+  cursor:pointer;
+  opacity:.6;
+  transition:.2s;
+}
+
+.modal-close:hover{
+  opacity:1;
+}
+
+.social-buttons{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn.social{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 10px 16px;
+  border-radius: 12px;
+
+  font-weight: 600;
+  color: #fff;
+}
+
+/* força tamanho e alinhamento do SVG */
+.btn.social svg{
+  width: 18px;
+  height: 18px;
+
+  display: block;
+  flex-shrink: 0;
+
+  fill: currentColor;
+}
+
+/* EMAIL */
+.btn.email{
+  background:#EA4335;
+}
+.btn.email:hover{
+  background:#d63b2e;
+}
+
+/* WHATSAPP */
+.btn.whatsapp{
+  background:#25D366;
+}
+.btn.whatsapp:hover{
+  background:#1ebe5d;
+}
+
+/* GITHUB */
+.btn.github{
+  background:#24292e;
+}
+.btn.github:hover{
+  background:#1b1f23;
+}
+
+/* LINKEDIN */
+.btn.linkedin{
+  background:#0A66C2;
+}
+.btn.linkedin:hover{
+  background:#084c91;
+}
+
+.social-buttons{
+  margin-top:20px;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+/* botão social */
+.btn.social{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.btn.social svg{
+  display:block;
+}
+
+/* cores por plataforma */
+.btn.social.email{ background:#EA4335; border-color: rgba(255,255,255,0.18); }
+.btn.social.email:hover{ filter: brightness(0.95); }
+
+.btn.social.whatsapp{ background:#25D366; border-color: rgba(255,255,255,0.18); }
+.btn.social.whatsapp:hover{ filter: brightness(0.95); }
+
+.btn.social.github{ background:#24292e; border-color: rgba(255,255,255,0.18); }
+.btn.social.github:hover{ filter: brightness(1.08); }
+
+.btn.social.linkedin{ background:#0A66C2; border-color: rgba(255,255,255,0.18); }
+.btn.social.linkedin:hover{ filter: brightness(0.95); }
+
+/* mobile padrão */
+.responsive-btn{
+  width:100%;
+}
+
+/* desktop */
+@media (min-width:768px){
+  .responsive-btn{
+    max-width:200px;
+
+  }
+}
+
+.profile-thumb{
+  width:35px;
+  height:38px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.profile-thumb:hover{
+  transform:scale(1.05);
+}
+
+/* modal */
+.image-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.image-modal.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.image-modal-content img{
+  max-width:90%;
+  max-height:90vh;
+  border-radius:16px;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+}
+
+.image-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(8px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.image-modal.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.profile-card{
+  background:#111319;
+  padding:40px 30px;
+  border-radius:24px;
+  max-width:400px;
+  width:90%;
+  text-align:center;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.profile-large{
+  width:220px;
+  height:220px;
+  border-radius:24px;
+  object-fit:cover;
+  margin-bottom:20px;
+}
+
+.profile-card h2{
+  margin:0 0 6px;
+}
+
+.profile-role{
+  color:rgba(255,255,255,0.6);
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+.profile-bio{
+  font-size:14px;
+  color:rgba(255,255,255,0.75);
+  margin-bottom:20px;
+}
+
+.profile-links{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
+
+.profile-links a{
+  padding:8px 14px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.08);
+  text-decoration:none;
+  color:white;
+  font-size:13px;
+  transition:.2s;
+}
+
+.profile-links a:hover{
+  background:rgba(255,255,255,0.15);
+}
+
+.mini-chat{
+  max-width:350px;
+  background:#111319;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+/* Mobile */
+@media (max-width: 768px) {
+  .mini-chat {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    max-width: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-body {
+    flex: 1;
+    height: auto;
+  }
+}
+.chat-header{
+  padding:14px;
+  background:rgba(255,255,255,.05);
+  font-weight:600;
+}
+
+.chat-body{
+  padding:15px;
+  height:260px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.chat-message{
+  padding:10px 14px;
+  border-radius:14px;
+  font-size:14px;
+  max-width:80%;
+}
+
+.chat-message.bot{
+  background:rgba(255,255,255,.08);
+  align-self:flex-start;
+}
+
+.chat-message.user{
+  background:#25D366;
+  color:black;
+  align-self:flex-end;
+}
+
+.chat-input{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.chat-input input{
+  flex:1;
+  padding:20px;
+  border:none;
+  background:transparent;
+  color:white;
+  height: 60px;
+}
+
+.chat-input button{
+  background:#25D366;
+  border:none;
+  padding:10px 16px;
+  cursor:pointer;
+}
+
+/* Botão flutuante */
+/* BOTÃO FLUTUANTE */
+.chat-toggle{
+  position:fixed;
+  bottom:28px;
+  right:28px;
+  width:56px;
+  height:56px;
+  border-radius:25px;
+  border:none;
+  background-color: #5848e0;
+
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);
+  transition:.3s ease;
+  z-index:9999;
+}
+
+.chat-toggle:hover{
+  transform:translateY(-3px);
+  box-shadow:0 30px 70px rgba(0,0,0,.5);
+}
+
+/* CHAT */
+.mini-chat.floating{
+  position:fixed;
+  bottom:100px;
+  right:28px;
+  width:360px;
+  background:#111319;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  transform:translateY(20px);
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:9998;
+}
+
+@media (max-width: 768px) {
+  .mini-chat.floating{
+   
+    width: 100%;
+    z-index: 10000;
+    border-radius:0px;
+
+    
+  }
+}
+
+.mini-chat.active{
+  transform:translateY(0);
+  opacity:1;
+  visibility:visible;
+}
+
+.chat-header{
+  padding:16px;
+  background:rgba(255,255,255,.04);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+}
+
+.chat-status{
+  display:block;
+  font-size:12px;
+  color:#4ade80;
+}
+
+.chat-close{
+  background:none;
+  border:none;
+  color:white;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.chat-body{
+  padding:18px;
+  height:280px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.chat-message{
+  padding:12px 16px;
+  border-radius:16px;
+  font-size:14px;
+  max-width:80%;
+}
+
+.chat-message.bot{
+  background:rgba(255,255,255,.06);
+  align-self:flex-start;
+}
+
+.chat-message.user{
+  background:#2563eb;
+  color:white;
+  align-self:flex-end;
+}
+
+.chat-input{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.chat-input input{
+  flex:1;
+  padding:14px;
+  border:none;
+  background:transparent;
+  color:white;
+  font-size:14px;
+  outline:none;
+}
+
+.chat-input button{
+  width:50px;
+  border:none;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.hero-actions{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+/* padrão desktop */
+.hero-btn{
+  max-width:200px;
+  width:100%;
+}
+
+/* botão linkedin cor */
+.linkedin{
+  background:#0A66C2;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+  .hero-actions{
+    flex-direction:column;
+  }
+
+  .hero-btn{
+    max-width:none;
+    width:100%;
+  }
+
+}
+
+/* ===== MENU MOBILE (HAMBURGUER + DRAWER) ===== */
+
+.menu-btn{
+  display:none; /* desktop não mostra */
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  gap: 6px;
+  flex-direction:column;
+  transition: 160ms ease;
+}
+
+.menu-btn:hover{
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.menu-btn span{
+  width: 18px;
+  height: 2px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 999px;
+  display:block;
+  transition: .2s ease;
+}
+
+/* overlay */
+.mobile-menu-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  visibility: hidden;
+  transition: .25s ease;
+  z-index: 999;
+}
+
+/* drawer */
+.mobile-menu{
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(92vw, 360px);
+  height: 100vh;
+  background: rgba(11,15,25,0.92);
+  backdrop-filter: blur(14px);
+  border-left: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  transform: translateX(100%);
+  transition: transform .25s ease;
+  z-index: 1000;
+
+  display:flex;
+  flex-direction:column;
+  padding: 14px;
+}
+
+.mobile-menu-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 10px 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.mobile-menu-title{
+  display:flex;
+  flex-direction:column;
+  line-height: 1.2;
+}
+.mobile-menu-title strong{
+  font-size: 14px;
+}
+.mobile-menu-title span{
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+}
+
+.mobile-menu-close{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+  cursor:pointer;
+  font-size: 18px;
+}
+
+.mobile-menu-links{
+  display:flex;
+  flex-direction:column;
+  padding: 12px 6px;
+  gap: 6px;
+}
+
+.mobile-link{
+  padding: 12px 12px;
+  border-radius: 14px;
+  color: rgba(255,255,255,0.86);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  transition: .2s ease;
+}
+.mobile-link:hover{
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(124,92,255,0.28);
+}
+
+.mobile-menu-actions{
+  margin-top:auto;
+  display:flex;
+  gap: 10px;
+  flex-wrap:wrap;
+  padding: 12px 6px 6px;
+}
+
+/* ativo */
+.mobile-menu-overlay.active{
+  opacity:1;
+  visibility: visible;
+}
+.mobile-menu.active{
+  transform: translateX(0);
+}
+
+/* MOBILE */
+@media (max-width: 920px){
+  .links{ display:none; }
+  .menu-btn{ display:flex; }
+}
+
+.chat-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.chat-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.chat-status {
+  font-size: 12px;
+  color: #25D366;
+}
+
+.chat-toggle{
+  transition: transform .18s ease;
+  transform-origin: center;
+}
+
+.chat-toggle.is-switching{
+  transform: scale(.88) rotate(-8deg);
+}
+  </style>
+</head>
+
+
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Voltar ao topo">
+        <div class="logo">
+            <img src="./foto.jpeg"
+                alt="foto"
+                class="profile-thumb"
+                id="openProfile">
+        </div>
+
+        <div>
+            <div class="name">Guil Vitor</div>
+            <div class="role">
+            Desenvolvedor Web •
+            <span class="hl p">React</span> /
+            <span class="hl p">Next.js</span>
+            </div>
+        </div>
+        </a>
+
+      <nav class="links" aria-label="Navegação">
+        <a href="#projetos">Projetos</a>
+        <a href="#experiencia">Experiência</a>
+        <a href="#stack">Stack</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+        <a href="https://github.com/GuilVitor17" target="_blank"
+           rel="noopener noreferrer" class="btn social github">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.13-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a10.98 10.98 0 012.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.73.8 1.17 1.83 1.17 3.09 0 4.44-2.69 5.41-5.26 5.69.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0023.5 12C23.5 5.74 18.27.5 12 .5z"/>
+            </svg>
+            GitHub
+            </a>
+      </nav>
+
+      <div class="nav-cta">
+       <!-- BOTÃO MENU MOBILE -->
+        <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-controls="mobileMenu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MENU MOBILE (DRAWER) -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+<nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
+  <div class="mobile-menu-head">
+    <div class="mobile-menu-title">
+      <strong>Menu</strong>
+      <span>Navegação rápida</span>
+    </div>
+
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Fechar menu">✕</button>
+  </div>
+
+  <div class="mobile-menu-links">
+    <a href="#projetos" class="mobile-link">Projetos</a>
+    <a href="#experiencia" class="mobile-link">Experiência</a>
+    <a href="#stack" class="mobile-link">Stack</a>
+    <a href="#sobre" class="mobile-link">Sobre</a>
+    <a href="#contato" class="mobile-link">Contato</a>
+  </div>
+
+  <div class="mobile-menu-actions">
+    <a href="https://github.com/GuilVitor17" target="_blank"
+           rel="noopener noreferrer" class="btn social github">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.13-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a10.98 10.98 0 012.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.73.8 1.17 1.83 1.17 3.09 0 4.44-2.69 5.41-5.26 5.69.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0023.5 12C23.5 5.74 18.27.5 12 .5z"/>
+            </svg>
+            GitHub
+            </a>
+  </div>
+</nav>
+
+
+  <!-- HERO -->
+  <main id="top" class="hero">
+    <div class="container grid-hero">
+      <div>
+        <div class="badge">
+          <span class="dot"></span>
+          Disponível para oportunidades (<span class="hl w">Frontend</span> / <span class="hl w">Full Stack</span>)
+        </div>
+
+        <h1>
+          Construo interfaces rápidas e aplicações em <span class="hl c u">produção</span> com
+          <span class="hl p u">React</span>,
+          <span class="hl c u">Next.js</span> e
+          <span class="hl p">TypeScript</span>.
+        </h1>
+
+        <p class="lead">
+          Desenvolvedor Web com experiência prática criando produtos reais: <span class="hl w">UI moderna</span>,
+          integração com <span class="hl c">APIs</span>, <span class="hl c">autenticação</span>,
+          <span class="hl c">deploy</span> e melhorias contínuas com foco em <span class="hl c">UX</span> e <span class="hl c">performance</span>.
+        </p>
+
+        <div class="hero-actions">
+        <a class="btn primary hero-btn" href="#projetos">
+          Ver projetos
+        </a>
+
+        <a class="btn linkedin hero-btn"
+          href="https://www.linkedin.com/in/guil-vitor-27409323b"
+          target="_blank"
+          rel="noreferrer">
+
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.35V9h3.42v1.56h.05c.48-.9 1.65-1.85 3.4-1.85 3.64 0 4.32 2.4 4.32 5.52v6.22zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM3.56 20.45h3.56V9H3.56v11.45zM22.23 0H1.77C.79 0 0 .78 0 1.74v20.52C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.21 0 22.23 0z"/>
+          </svg>
+
+          LinkedIn
+        </a>
+      </div>
+
+        <div class="mini" aria-label="Destaques">
+          <span>⚡ <span class="hl p">Next.js</span> + <span class="hl p">TypeScript</span></span>
+          <span>🔐 <span class="hl c">Auth</span> + <span class="hl c">APIs REST</span></span>
+          <span>🚀 <span class="hl c">Deploy</span> <span class="hl w">Vercel</span></span>
+          <span>🧠 <span class="hl c">Integrações com IA</span></span>
+        </div>
+      </div>
+
+      <aside class="card hero-card" aria-label="Resumo rápido">
+        <div class="kpis">
+          <div class="kpi">
+            <div class="num"><span class="hl p">3+ anos</span></div>
+            <div class="lab">Experiência prática</div>
+          </div>
+          <div class="kpi">
+            <div class="num"><span class="hl c">Produtos</span></div>
+            <div class="lab"><span class="hl c">Em produção</span></div>
+          </div>
+          <div class="kpi">
+            <div class="num"><span class="hl p">React</span></div>
+            <div class="lab">UI + componentes</div>
+          </div>
+          <div class="kpi">
+            <div class="num"><span class="hl p">Node</span></div>
+            <div class="lab">APIs + <span class="hl c">MongoDB</span></div>
+          </div>
+        </div>
+
+        <div class="quick">
+          <div class="row">
+            <div class="left">
+              <div class="t"><span class="hl w">DivulgaVale</span></div>
+              <div class="s"><span class="strong-badge">Full Stack</span> • <span class="hl p">Next</span> + <span class="hl p">Node</span> + <span class="hl c">MongoDB</span></div>
+            </div>
+            <div class="chip">Produto</div>
+          </div>
+
+          <div class="row">
+            <div class="left">
+              <div class="t"><span class="hl w">Canal do Repasse</span></div>
+              <div class="s"><span class="hl w">Frontend</span> • <span class="hl p">React</span> / <span class="hl c">Next</span></div>
+            </div>
+            <div class="chip">Trabalho</div>
+          </div>
+
+          <div class="row">
+            <div class="left">
+              <div class="t"><span class="hl w">Plannejar</span></div>
+              <div class="s">Integrações com <span class="hl c">IA</span></div>
+            </div>
+            <div class="chip">Atual</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- PROJETOS -->
+  <section id="projetos">
+    <div class="container">
+      <div class="section-title">
+        <h2><span class="hl w">Projetos em destaque</span></h2>
+      </div>
+
+      <div class="grid cols-3">
+        <article class="panel">
+            <div class="project-header">
+            <img src="./divulga.png" alt="Logo Câmara" class="project-logo", style="width: 40px; height: 35px; border-radius: 2px;">
+            <h3>
+            <span class="hl w">DivulgaVale</span> • Plataforma <span class="hl p">Full Stack</span>
+            </h3>
+        </div>
+          <p>
+            Desenvolvimento completo com <span class="hl p">Next.js</span> (<span class="hl p">TS</span>), <span class="hl p">Node.js</span> e <span class="hl c">MongoDB</span>:
+            <span class="hl c">autenticação</span>, <span class="hl c">APIs</span>, <span class="hl c">integrações</span> e <span class="hl c u">deploy em produção</span>.
+          </p>
+          <div class="meta">
+            <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">MongoDB</span>
+          </div>
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" data-modal="modalDivulgaVale">Ver detalhes</a>
+          </div>
+
+            <!-- MODAL -->
+          
+
+
+          
+        </article>
+
+        <article class="panel">
+
+            <div class="project-header">
+            <img src="./plannejar.png" alt="Logo Câmara" class="project-logo", style="width: 40px; height: 35px;">
+            <h3>
+            <span class="hl w">Plannejar</span> • Plataforma com <span class="hl c">IA</span>
+            </h3>
+        </div>
+            
+          <p>
+            Implementações e integrações com <span class="hl c">IA</span> para melhorar experiência do usuário,
+            fluxos e respostas dentro da aplicação.
+          </p>
+          <div class="meta">
+            <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">IA</span>
+          </div>
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" data-modal="modalPlannejar">Ver detalhes</a>
+          </div>
+        </article>
+
+        <article class="panel">
+            <div class="project-header">
+            <img src="./avaliador.jpg" alt="Logo Câmara" class="project-logo", style="width: 100px; height: 30px">
+            <h3>
+            <span class="hl w">Avaliador Digital</span> • <span class="hl w">Frontend</span>
+            </h3>
+        </div>
+          <p>
+            Responsável por todo o front: interfaces dinâmicas, responsivas e com boa usabilidade
+            usando <span class="hl p">React.js</span> e <span class="hl c">Next.js</span>.
+          </p>
+          <div class="meta">
+            <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">UI</span><span class="tag">Performance</span>
+          </div>
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" data-modal="modalAvaliador">Ver detalhes</a>
+          </div>
+        </article>
+
+        <!-- ================= FRST FALCONI ================= -->
+        <article class="panel">
+
+            <div class="project-header">
+            <img src="./frstLogo.svg" alt="Logo Câmara" class="project-logo", style="width: 90px; height: 40px">
+            <h3>
+            <span class="hl w">FRST Falconi</span> • <span class="hl w">Frontend</span>
+            </h3>
+        </div>
+
+        <p>
+            Atuação no desenvolvimento de interfaces modernas com
+            <span class="hl p">React.js</span> e <span class="hl c">Next.js</span>,
+            focando em performance, componentização e escalabilidade.
+        </p>
+        <div class="meta">
+            <span class="tag">React</span>
+            <span class="tag">Next.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">UI</span>
+        </div>
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" data-modal="modalFalconi">Ver detalhes</a>
+        </div>
+        </article>
+
+
+<!-- ================= CÂMARA ================= -->
+<article class="panel">
+  <div class="project-header">
+    <img src="./saj.png" alt="Logo Câmara" class="project-logo", style="width: 100px; height: 40px;">
+    <h3>
+      <span class="hl w">Câmara de Vereadores</span> • Integrações
+    </h3>
+  </div>
+  <p>
+    Desenvolvimento de front-end com integração de
+    <span class="hl c">APIs externas</span>, foco em usabilidade,
+    organização de dados públicos e responsividade.
+  </p>
+  <div class="meta">
+    <span class="tag">React</span>
+    <span class="tag">APIs</span>
+    <span class="tag">Responsivo</span>
+  </div>
+  <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+    <a class="btn" data-modal="modalCamara">Ver detalhes</a>
+  </div>
+</article>
+
+
+<!-- ================= CANAL DO REPASSE ================= -->
+<article class="panel">
+    <div class="project-header">
+    <img src="./repasse.png" alt="Logo repasse" class="project-logo", style="width: 100px; height: 30px;">
+    <h3>
+      <span class="hl w">Canal do Repasse</span> • <span class="hl w">Frontend</span>
+    </h3>
+  </div>
+  <p>
+    Desenvolvimento e manutenção de funcionalidades em
+    <span class="hl p">React</span>,
+    melhorias contínuas na experiência do usuário e performance.
+  </p>
+  <div class="meta">
+    <span class="tag">React</span>
+    <span class="tag">Next.js</span>
+    <span class="tag">Performance</span>
+  </div>
+  <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+    <a class="btn" data-modal="modalCanal">Ver detalhes</a>
+  </div>
+</article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIÊNCIA + EDUCAÇÃO -->
+  <section id="experiencia">
+    <div class="container">
+      <div class="section-title">
+        <h2><span class="hl w">Experiência</span></h2>
+        <p>Empresas e projetos reais.</p>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Resumo profissional</h3>
+          <p>
+            Desenvolvedor Web com experiência prática em <span class="hl p">React.js</span> e <span class="hl c">Next.js</span>, criando interfaces modernas,
+            integrações com <span class="hl c">APIs</span> e aplicações completas em <span class="hl c">produção</span>. Participação em projetos como
+            <span class="hl w">Canal do Repasse</span>, <span class="hl w">FRST Falconi</span> e <span class="hl w">Growth2Data</span>, além de produto próprio <span class="hl p">full stack</span>.
+          </p>
+
+          <div style="margin-top:14px" class="timeline">
+            <div class="item">
+              <div>
+                <strong><span class="hl w">Canal do Repasse</span></strong><br />
+                <span>Desenvolvedor <span class="hl w">Frontend</span> • 2025-2026</span>
+              </div>
+              <span><span class="hl p">React</span></span>
+            </div>
+
+            <div class="item">
+              <div>
+                <strong><span class="hl w">Freelas</span></strong><br />
+                <span><span class="hl w">Linksysten</span>, <span class="hl w">DoisR</span>, <span class="hl w">Jsmx</span></span>
+              </div>
+              <span><span class="hl p">React</span> / <span class="hl c">Next</span></span>
+            </div>
+
+            <div class="item">
+              <div>
+                <strong><span class="hl w">FRST Falconi</span></strong><br />
+                <span>Desenvolvedor <span class="hl w">Frontend</span> • 2023–2024</span>
+              </div>
+              <span><span class="hl p">React</span> / <span class="hl c">Next</span></span>
+            </div>
+
+            <div class="item">
+              <div>
+                <strong><span class="hl w">Growth2Data</span></strong><br />
+                <span>Desenvolvedor <span class="hl w">Frontend</span> • 2022</span>
+              </div>
+              <span><span class="hl c">UI</span> / <span class="hl c">React</span></span>
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Outros projetos</h3>
+          <p>
+            Contribuições em projetos com integração de <span class="hl c">APIs externas</span> e interfaces modernas.
+          </p>
+
+          <div style="margin-top:14px" class="timeline">
+            <div class="item">
+              <div>
+                <strong><span class="hl w">DivulgaVale</span></strong><br />
+                <span>Desenvolvedor <span class="hl w">Full-Stack</span> • 2026</span>
+              </div>
+               <span><span class="hl p">Next</span> / <span class="hl c">Node JS</span></span>
+            </div>
+           
+            
+          <div class="item">
+              <div>
+                <strong><span class="hl w">Plannejar</span></strong><br />
+                <span>Desenvolvedor <span class="hl w">Frontend</span> • 2025-2026</span>
+              </div>
+               <span><span class="hl p">React</span> / <span class="hl c">Next</span></span>
+            </div>
+
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" style="background-color: #25D366;" href="#contato"> <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M16.75 13.96c-.25-.13-1.47-.72-1.7-.8-.23-.08-.4-.12-.56.12-.17.25-.65.8-.8.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.25-.74-.66-1.23-1.47-1.37-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.65.29-.22.23-.85.83-.85 2.02s.87 2.34.99 2.5c.12.17 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.18 1.11.15 1.53.09.47-.07 1.47-.6 1.68-1.17.21-.57.21-1.06.15-1.17-.06-.11-.23-.17-.48-.29z"/>
+                <path d="M12 2a10 10 0 00-8.66 15l-1.3 4.75 4.87-1.28A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.18-1.14l-.3-.18-2.9.76.77-2.82-.2-.29A8.2 8.2 0 1112 20.2z"/>
+            </svg> Vamos conversar</a>
+            <a class="btn ghost" href="#stack">Ver stack</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="container">
+      <div class="section-title">
+        <h2><span class="hl w">Stack principal</span></h2>
+        <p>Stack principal.</p>
+      </div>
+
+      <div class="grid cols-3">
+        <div class="panel">
+          <h3>Frontend</h3>
+          <p><span class="hl p">React</span> • <span class="hl c">Next.js</span> • <span class="hl p">TypeScript</span> • Componentização • <span class="hl c">UI/UX</span></p>
+          <div class="meta">
+            <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Backend</h3>
+          <p><span class="hl p">Node.js</span> (<span class="hl w">Express</span>) • <span class="hl c">APIs REST</span> • <span class="hl c">Autenticação</span> • Integrações</p>
+          <div class="meta">
+            <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">REST</span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Banco & Deploy</h3>
+          <p><span class="hl c">MongoDB</span> • <span class="hl w">Git</span> • <span class="hl c">Vercel</span> • Integração com APIs externas</p>
+          <div class="meta">
+            <span class="tag">MongoDB</span><span class="tag">Git</span><span class="tag">Vercel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="container">
+      <div class="section-title">
+        <h2><span class="hl w">Sobre</span></h2>
+        <p>Soluções web com qualidade.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Quem eu sou</h3>
+        <p>
+            Desenvolvedor <span class="hl w">Frontend</span> com atuação em projetos reais,
+            incluindo desenvolvimento de aplicações completas utilizando
+            <span class="hl c">React</span>, <span class="hl c">Next.js</span> e
+            <span class="hl c">Node.js</span>.
+            Experiência com integração de <span class="hl c">APIs</span>,
+            autenticação, estruturação de componentes e deploy.
+            Busco evoluir continuamente entregando soluções bem organizadas
+            e focadas na experiência do usuário.
+            </p>
+
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="tag"><span class="hl c">Foco em UX</span></span>
+          <span class="tag"><span class="hl c">Performance</span></span>
+          <span class="tag"><span class="hl w">Boas práticas</span></span>
+          <span class="tag"><span class="hl w">Código limpo</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+<section id="contato">
+  <div class="container">
+
+    <div class="section-title">
+      <h2><span class="hl w">Contato</span></h2>
+    </div>
+
+    <div>
+
+      <div class="panel contato-panel">
+        <h3>Vamos conversar</h3>
+
+        <p>
+          Se você tem uma vaga 
+          (<span class="hl w">Frontend</span> /
+          <span class="hl w">Full Stack</span>) 
+          ou um projeto, me chama. 
+        </p>
+
+        <div class="social-buttons" style="justify-content: space-between;">
+
+          <!-- EMAIL -->
+         <a href="mailto:guilvitor17@gmail.com" class="btn social email responsive-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            Email
+            </a>
+
+          <!-- WHATSAPP -->
+         <a href="https://wa.me/5575974003866"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn social whatsapp responsive-btn">
+
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M16.75 13.96c-.25-.13-1.47-.72-1.7-.8-.23-.08-.4-.12-.56.12-.17.25-.65.8-.8.96-.14.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.25-.74-.66-1.23-1.47-1.37-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.65.29-.22.23-.85.83-.85 2.02s.87 2.34.99 2.5c.12.17 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.18 1.11.15 1.53.09.47-.07 1.47-.6 1.68-1.17.21-.57.21-1.06.15-1.17-.06-.11-.23-.17-.48-.29z"/>
+                <path d="M12 2a10 10 0 00-8.66 15l-1.3 4.75 4.87-1.28A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.18-1.14l-.3-.18-2.9.76.77-2.82-.2-.29A8.2 8.2 0 1112 20.2z"/>
+            </svg>
+
+            WhatsApp
+            </a>
+
+          <!-- GITHUB -->
+          <a href="https://github.com/GuilVitor17" target="_blank"
+          rel="noopener noreferrer" class="btn social github responsive-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.1 3.29 9.42 7.86 10.96.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.13-3.2.7-3.88-1.38-3.88-1.38-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.71 0-1.26.45-2.29 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a10.98 10.98 0 012.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.73.8 1.17 1.83 1.17 3.09 0 4.44-2.69 5.41-5.26 5.69.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.52 11.52 0 0023.5 12C23.5 5.74 18.27.5 12 .5z"/>
+            </svg>
+            GitHub
+            </a>
+
+          <!-- LINKEDIN -->
+         <a href="https://www.linkedin.com/in/guil-vitor-27409323b"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn social linkedin responsive-btn">
+
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.35V9h3.42v1.56h.05c.48-.9 1.65-1.85 3.4-1.85 3.64 0 4.32 2.4 4.32 5.52v6.22zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM3.56 20.45h3.56V9H3.56v11.45zM22.23 0H1.77C.79 0 0 .78 0 1.74v20.52C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.21 0 22.23 0z"/>
+            </svg>
+
+            LinkedIn
+            </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+ <!-- ================= MODAIS ================= -->
+
+<!-- MODAL 1 - DivulgaVale -->
+<div class="modal-overlay" id="modalDivulgaVale">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>DivulgaVale</h2>
+          <span class="modal-sub">Full Stack • Next.js • Node • MongoDB</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+   <div class="modal-description">
+    Desenvolvi a <span class="hl w">plataforma marketplace</span>
+    <span class="hl c">do zero</span>, sendo responsável pela
+    <span class="hl p">arquitetura do front-end</span>,
+    implementação de <span class="hl c">APIs REST</span>,
+    <span class="hl p">sistema de autenticação</span>,
+    criação do <span class="hl p">painel administrativo</span>
+    e <span class="hl c">deploy em produção</span>.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./divulgavale1.png" class="modal-image zoomable">
+      <img src="./divulgavale2.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+    <a 
+        href="https://www.divulgavale.com/" 
+        class="btn primary" 
+        target="_blank" 
+        rel="noopener noreferrer"
+    >
+        Ver Projeto
+    </a>
+    </div>
+
+    </div>
+    </div>
+
+
+<!-- MODAL 2 - Plannejar -->
+<div class="modal-overlay" id="modalPlannejar">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>Plannejar</h2>
+          <span class="modal-sub">React • Next.js • Integrações com IA</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+    <div class="modal-description">
+    Responsável pela <span class="hl p">implementação das integrações com IA</span>,
+    estruturação dos <span class="hl c">fluxos automatizados</span> e
+    melhoria da <span class="hl p">experiência do usuário (UX)</span>,
+    garantindo respostas mais inteligentes e processos mais eficientes.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./plannejar1.png" class="modal-image zoomable">
+      <img src="./plannejar2.png" class="modal-image zoomable">
+      <img src="./plannejar3.png" class="modal-image zoomable">
+      <img src="./plannejar4.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+      <a href="https://plannejar.com/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn primary">Ver Projeto</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL 3 - Avaliador Digital -->
+<div class="modal-overlay" id="modalAvaliador">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>Avaliador Digital</h2>
+          <span class="modal-sub">Frontend • React • Next.js</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+    <div class="modal-description">
+    Desenvolvi o <span class="hl p">front-end da aplicação</span> do zero,
+    estruturando a <span class="hl c">arquitetura de componentes</span>,
+    garantindo <span class="hl p">responsividade em múltiplos dispositivos</span>,
+    melhoria de <span class="hl c">UX</span> e
+    otimizações voltadas para <span class="hl p">performance e usabilidade</span>.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./avaliador1.png" class="modal-image zoomable">
+      <img src="./avaliador2.png" class="modal-image zoomable">
+      <img src="./avaliador3.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+      <a href="https://www.avaliadordigital.com.br/"
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn primary">Ver Projeto</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= MODAL FALCONI ================= -->
+<div class="modal-overlay" id="modalFalconi">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>FRST Falconi</h2>
+          <span class="modal-sub">Frontend • React • Next.js • TypeScript</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+    <div class="modal-description">
+    Atuei no <span class="hl p">desenvolvimento e evolução do front-end</span>,
+    aplicando <span class="hl c">componentização</span> e boas práticas,
+    contribuindo para maior <span class="hl p">escalabilidade</span>
+    e melhoria contínua da <span class="hl c">experiência do usuário (UX)</span>.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./frstfalconi1.png" class="modal-image zoomable">
+      <img src="./frstfalconi2.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+      <a href="https://hall.frstfalconi.com.br/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn primary">Ver Projeto</a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================= MODAL CÂMARA ================= -->
+<div class="modal-overlay" id="modalCamara">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>Câmara de Vereadores</h2>
+          <span class="modal-sub">Frontend • APIs Públicas • Responsivo</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+    <div class="modal-description">
+    Fui responsável pela <span class="hl p">integração com APIs públicas</span>,
+    estruturação e exibição de <span class="hl c">dados legislativos</span>,
+    além da implementação de uma
+    <span class="hl p">interface responsiva e organizada</span>.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./camarasaj.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+      <a href="https://www.camarasaj.ba.gov.br/"
+      target="_blank" 
+      rel="noopener noreferrer"
+       class="btn primary">Ver Projeto</a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================= MODAL CANAL DO REPASSE ================= -->
+<div class="modal-overlay" id="modalCanal">
+  <div class="modal">
+
+    <div class="modal-top">
+      <div class="modal-title">
+        <div>
+          <h2>Canal do Repasse</h2>
+          <span class="modal-sub">Frontend • React • Next.js</span>
+        </div>
+      </div>
+      <button class="modal-close">&times;</button>
+    </div>
+
+    <div class="modal-description">
+    Atuei no <span class="hl p">desenvolvimento e manutenção do front-end</span>,
+    implementando <span class="hl c">novas funcionalidades</span>,
+    realizando <span class="hl p">refatorações</span> e aplicando melhorias de
+    <span class="hl c">performance</span> e
+    <span class="hl p">experiência do usuário (UX)</span>.
+    </div>
+
+    <div class="modal-gallery">
+      <img src="./canal1.png" class="modal-image zoomable">
+      <img src="./canal2.png" class="modal-image zoomable">
+    </div>
+
+    <div class="modal-footer">
+      <a href="https://www.canaldorepasse.com.br/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="btn primary">Ver Projeto</a>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- VISUALIZADOR DE IMAGEM -->
+<div class="image-viewer" id="imageViewer">
+  <span class="image-close">&times;</span>
+  <div class="image-scroll">
+    <img src="" id="expandedImage">
+  </div>
+</div>
+
+
+  <div class="image-modal" id="profileModal">
+  <div class="profile-card">
+
+    <img src="./foto.jpeg" alt="Guil Vitor" class="profile-large">
+
+    <h2>Guil Vitor</h2>
+    <p class="profile-role">
+      Desenvolvedor Web • <span class="hl p">React</span> / <span class="hl p">Next.js</span>
+    </p>
+
+    <p class="profile-bio">
+      Desenvolvedor focado em aplicações modernas,
+      experiência do usuário e código bem estruturado.
+    </p>
+
+    <div class="profile-links">
+      <a href="https://github.com/GuilVitor17" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/guil-vitor-27409323b" target="_blank">LinkedIn</a>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- BOTÃO FLUTUANTE -->
+<!-- BOTÃO FLUTUANTE -->
+<button class="chat-toggle" id="chatToggle" aria-label="Abrir chat">
+  <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" style="position: relative; top:3px">
+    <path d="M21 6.5A4.5 4.5 0 0016.5 2h-9A4.5 4.5 0 003 6.5v5A4.5 4.5 0 007.5 16H8v4l4-4h4.5A4.5 4.5 0 0021 11.5v-5z"/>
+  </svg>
+</button>
+
+<!-- MINI CHAT -->
+<div class="mini-chat floating" id="miniChat">
+  <div class="chat-header">
+    <div class="chat-user">
+    <img src="./foto.jpeg" alt="Foto Guil Vitor" class="chat-avatar">
+
+    <div class="chat-user-info">
+      <strong>Guil Vitor</strong>
+      <span class="chat-status">Online</span>
+    </div>
+  </div>
+    <button class="chat-close" id="chatClose" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <div class="chat-message bot">
+      Olá 👋 Qual seu nome?
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Digite sua mensagem...">
+    <button id="chatSend">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container" style="display:flex; justify-content: space-between; gap:12px; flex-wrap:wrap;">
+      <div>© <span id="year"></span> Guil Vitor.</div>
+      <div style="color: rgba(255,255,255,0.45);">Mutuipe/BA • Remoto</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    /* Scroll reveal */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("show");
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll("section, .panel, .kpi, .item, .row").forEach(el=>{
+      el.classList.add("reveal");
+      observer.observe(el);
+    });
+  </script>
+
+  <script>
+document.querySelectorAll('[data-modal]').forEach(button => {
+  button.addEventListener('click', () => {
+    const modalId = button.getAttribute('data-modal');
+    document.getElementById(modalId).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.modal-close').forEach(button => {
+  button.addEventListener('click', () => {
+    button.closest('.modal-overlay').classList.remove('active');
+  });
+});
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+    }
+  });
+});
+</script>
+
+<script>
+/* Abrir modal principal */
+function openModal(id) {
+  document.getElementById(id).classList.add("active");
+}
+
+function closeModal() {
+  document.querySelectorAll(".modal-overlay").forEach(modal => {
+    modal.classList.remove("active");
+  });
+}
+
+/* Fechar no X */
+document.querySelectorAll(".modal-close").forEach(btn => {
+  btn.addEventListener("click", closeModal);
+});
+
+/* Fechar clicando fora */
+document.querySelectorAll(".modal-overlay").forEach(overlay => {
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) {
+      overlay.classList.remove("active");
+    }
+  });
+});
+
+/* ================= */
+/* IMAGEM AMPLIADA */
+/* ================= */
+
+const viewer = document.getElementById("imageViewer");
+const expandedImage = document.getElementById("expandedImage");
+
+document.querySelectorAll(".zoomable").forEach(img => {
+  img.addEventListener("click", () => {
+    viewer.classList.add("active");
+    expandedImage.src = img.src;
+  });
+});
+
+document.querySelector(".image-close").addEventListener("click", () => {
+  viewer.classList.remove("active");
+});
+
+viewer.addEventListener("click", e => {
+  if (e.target === viewer) {
+    viewer.classList.remove("active");
+  }
+});
+</script>
+
+
+<!-- =========================
+     3) JS do Accordion (cole no final do body, antes de </body>)
+========================= -->
+<script>
+  (function(){
+    const roots = document.querySelectorAll('[data-acc-root]');
+
+    function closePanel(btn, panel){
+      btn.setAttribute('aria-expanded', 'false');
+      panel.style.height = panel.scrollHeight + 'px'; // garante animar do tamanho atual
+      // força reflow pra animação pegar
+      panel.offsetHeight;
+      panel.style.height = '0px';
+    }
+
+    function openPanel(btn, panel){
+      btn.setAttribute('aria-expanded', 'true');
+      panel.style.height = panel.scrollHeight + 'px';
+    }
+
+    function isOpen(btn){
+      return btn.getAttribute('aria-expanded') === 'true';
+    }
+
+    roots.forEach(root => {
+      const items = root.querySelectorAll('.acc-item');
+
+      items.forEach(item => {
+        const btn = item.querySelector('.acc-toggle');
+        const panelId = btn.getAttribute('aria-controls');
+        const panel = item.querySelector('#' + CSS.escape(panelId));
+
+        // segurança
+        if(!btn || !panel) return;
+
+        // deixa fechado inicial
+        panel.style.height = '0px';
+        btn.setAttribute('aria-expanded', 'false');
+
+        btn.addEventListener('click', () => {
+          const willOpen = !isOpen(btn);
+
+          // fecha todos antes (modo accordion)
+          items.forEach(otherItem => {
+            const otherBtn = otherItem.querySelector('.acc-toggle');
+            const otherPanelId = otherBtn?.getAttribute('aria-controls');
+            const otherPanel = otherPanelId ? otherItem.querySelector('#' + CSS.escape(otherPanelId)) : null;
+            if(otherBtn && otherPanel) closePanel(otherBtn, otherPanel);
+          });
+
+          // se era pra abrir, abre o clicado
+          if(willOpen) openPanel(btn, panel);
+        });
+
+        // depois que termina a animação:
+        // - se estiver aberto, deixa height:auto (pra conteúdo responsivo)
+        // - se estiver fechado, garante 0
+        panel.addEventListener('transitionend', () => {
+          if(isOpen(btn)){
+            panel.style.height = 'auto';
+          } else {
+            panel.style.height = '0px';
+          }
+        });
+      });
+
+      // ✅ Se quiser abrir o primeiro por padrão, descomenta:
+      // const firstBtn = root.querySelector('.acc-item .acc-toggle');
+      // if(firstBtn){
+      //   const firstPanel = root.querySelector('#' + CSS.escape(firstBtn.getAttribute('aria-controls')));
+      //   if(firstPanel) {
+      //     firstBtn.setAttribute('aria-expanded', 'true');
+      //     firstPanel.style.height = firstPanel.scrollHeight + 'px';
+      //   }
+      // }
+    });
+
+    // Ajusta altura ao redimensionar (se estiver aberto e height:auto)
+    window.addEventListener('resize', () => {
+      document.querySelectorAll('[data-acc-root] .acc-item').forEach(item => {
+        const btn = item.querySelector('.acc-toggle');
+        const panelId = btn?.getAttribute('aria-controls');
+        const panel = panelId ? item.querySelector('#' + CSS.escape(panelId)) : null;
+        if(btn && panel && btn.getAttribute('aria-expanded') === 'true'){
+          // se estiver auto, mede e seta px pra não quebrar animação em alguns browsers
+          panel.style.height = 'auto';
+        }
+      });
+    });
+  })();
+</script>
+
+<script>
+const openBtn = document.getElementById("openProfile");
+const modal = document.getElementById("profileModal");
+
+openBtn.addEventListener("click", function(e){
+  e.preventDefault(); // impede ir para #top
+  modal.classList.add("active");
+});
+
+modal.addEventListener("click", function(){
+  modal.classList.remove("active");
+});
+</script>
+
+<script>
+const input = document.getElementById("chatInput");
+const sendBtn = document.getElementById("chatSend");
+const chatBody = document.getElementById("chatBody");
+
+let step = 0;
+let userData = {
+  name: "",
+  subject: "",
+  message: ""
+};
+
+sendBtn.addEventListener("click", handleChat);
+
+function handleChat(){
+  const value = input.value.trim();
+  if(!value) return;
+
+  addMessage(value, "user");
+  input.value = "";
+
+  if(step === 0){
+    userData.name = value;
+    setTimeout(()=>{
+      addMessage("Qual o assunto? (vaga / projeto / outro)", "bot");
+    },500);
+    step++;
+  }
+
+  else if(step === 1){
+    userData.subject = value;
+    setTimeout(()=>{
+      addMessage("Quer deixar uma mensagem?", "bot");
+    },500);
+    step++;
+  }
+
+  else if(step === 2){
+    userData.message = value;
+
+    const finalMessage =
+    `Olá Guil, me chamo ${userData.name}.
+    Assunto: ${userData.subject}.
+    Mensagem: ${userData.message}`;
+
+    const encoded = encodeURIComponent(finalMessage);
+    const phone = "5575974003866";
+
+    setTimeout(()=>{
+      addMessage("Perfeito 👍 Vou abrir o WhatsApp...", "bot");
+      window.open(`https://wa.me/${phone}?text=${encoded}`, "_blank");
+    },800);
+
+    step = 0;
+  }
+}
+
+function addMessage(text, type){
+  const div = document.createElement("div");
+  div.classList.add("chat-message", type);
+  div.innerText = text;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+</script>
+
+<script>
+const chatToggle = document.getElementById("chatToggle");
+const miniChat = document.getElementById("miniChat");
+const chatClose = document.getElementById("chatClose");
+
+const iconChat = `
+  <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" style="position: relative; top:3px">
+    <path d="M21 6.5A4.5 4.5 0 0016.5 2h-9A4.5 4.5 0 003 6.5v5A4.5 4.5 0 007.5 16H8v4l4-4h4.5A4.5 4.5 0 0021 11.5v-5z"/>
+  </svg>
+`;
+
+const iconClose = `
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" style="position: relative; top:2px">
+    <path d="M6 6L18 18M6 18L18 6"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"/>
+  </svg>
+`;
+
+function updateIcon() {
+  const isOpen = miniChat.classList.contains("active");
+  chatToggle.innerHTML = isOpen ? iconClose : iconChat;
+  chatToggle.setAttribute("aria-label", isOpen ? "Fechar chat" : "Abrir chat");
+}
+
+chatToggle.addEventListener("click", ()=>{
+  miniChat.classList.toggle("active");
+  updateIcon();
+});
+
+chatClose.addEventListener("click", ()=>{
+  miniChat.classList.remove("active");
+  updateIcon();
+});
+</script>
+
+
+<script>
+const menuBtn = document.getElementById("menuBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+const mobileOverlay = document.getElementById("mobileMenuOverlay");
+const mobileClose = document.getElementById("mobileMenuClose");
+
+function openMenu(){
+  mobileMenu.classList.add("active");
+  mobileOverlay.classList.add("active");
+  menuBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeMenu(){
+  mobileMenu.classList.remove("active");
+  mobileOverlay.classList.remove("active");
+  menuBtn.setAttribute("aria-expanded", "false");
+}
+
+menuBtn.addEventListener("click", openMenu);
+mobileClose.addEventListener("click", closeMenu);
+mobileOverlay.addEventListener("click", closeMenu);
+</script>
+</body>
+</html>
